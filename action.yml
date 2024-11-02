@@ -74,10 +74,17 @@ runs:
       run: |
         Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
 
-    - name: Install winget
+    - name: Provisioning Winget
       shell: powershell
       run: |
+        echo "PROVISIONING WINGET"
         Add-AppxProvisionedPackage -Online -PackagePath ./winget.msixbundle -LicensePath ./winget_License1.xml
+
+    - name: Installing Winget
+      shell: powershell
+      run: |
+        echo "INSTALLING WINGET"
+        Add-AppxPackage .\winget.msixbundle
 
     - name: Cleanup Downloads
       shell: powershell
@@ -98,7 +105,9 @@ runs:
             break
           }
         }
+        echo "START executing Get-AppxPackage "  
         Get-AppxPackage -AllUsers -Name "*winget*"  
+        echo "END OF executing Get-AppxPackage "  
 
     - name: Output winget Version
       id: winget-version
