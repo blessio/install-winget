@@ -6,7 +6,7 @@ on:
     - cron: 0 0 * * *
   push:
     branches:
-    - main
+    - main, blessio*
 
 jobs:
   test-job:
@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Install winget
       id: install-winget
-      uses: Cyberboss/install-winget@v1.0.6
+      uses: blesso/install-winget@blessio-patch-1
 
     - name: Check Version
       shell: bash
