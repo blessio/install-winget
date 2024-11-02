@@ -91,14 +91,14 @@ runs:
     - name: Wait to allow Installation to Finalize
       shell: powershell
       run: |
-        foreach ($i in 1..20) {
+        foreach ($i in 1..10) {
           Start-Sleep -Seconds 3
           Write-Host "Waiting for winget to install... ${i}"
           if (Get-Command winget -ErrorAction SilentlyContinue) {
             break
           }
-        Get-AppxPackage -AllUsers -Name "*winget*"  
         }
+        Get-AppxPackage -AllUsers -Name "*winget*"  
 
     - name: Output winget Version
       id: winget-version
