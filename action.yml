@@ -30,8 +30,7 @@ runs:
 
     - name: Download Microsoft.VCLibs.x64.14.00.Desktop
       shell: powershell
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
+      run: | # $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
 
     - name: Determine Latest winget release via GitHub API
@@ -92,12 +91,13 @@ runs:
     - name: Wait to allow Installation to Finalize
       shell: powershell
       run: |
-        foreach ($i in 1..180) {
+        foreach ($i in 1..20) {
           Start-Sleep -Seconds 3
           Write-Host "Waiting for winget to install... ${i}"
           if (Get-Command winget -ErrorAction SilentlyContinue) {
             break
           }
+        Get-AppxPackage -AllUsers -Name "*winget*"  
         }
 
     - name: Output winget Version
