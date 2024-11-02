@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Install winget
       id: install-winget
-      uses: blesso/install-winget@blessio-patch-1
+      uses: blessio/install-winget@blessio-patch-1
 
     - name: Check Version
       shell: bash
