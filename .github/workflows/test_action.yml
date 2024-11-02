@@ -40,7 +40,7 @@ jobs:
     steps:
     - name: Install winget
       id: install-winget
-      uses: Cyberboss/install-winget@v1.0.6
+      uses: blessio/install-winget@blessio-patch-1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
