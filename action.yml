@@ -20,8 +20,7 @@ runs:
   steps:
     - name: Download Microsoft.UI.Xaml v2.8.6
       shell: powershell
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
+      run: | # $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.8.6 -OutFile .\microsoft.ui.xaml.2.8.6.zip
 
     - name: Unzip Microsoft.UI.Xaml v2.8.6
@@ -38,8 +37,7 @@ runs:
     - name: Determine Latest winget release via GitHub API
       id: github_api
       shell: powershell
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
+      run: | #  $ProgressPreference = 'SilentlyContinue'
         if ("${{ inputs.GITHUB_TOKEN }}" -ne "NONE") {
           $headers = @{ "Authorization" = "Bearer ${{ inputs.GITHUB_TOKEN }}" }
           Write-Host "Token present"
@@ -59,14 +57,12 @@ runs:
 
     - name: Download winget
       shell: powershell
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
+      run: | # $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Headers $headers -Uri "${{ steps.github_api.outputs.latest_winget_msix_bundle_uri }}" -OutFile "./winget.msixbundle"
 
     - name: Download License
       shell: powershell
-      run: |
-        $ProgressPreference = 'SilentlyContinue'
+      run: | # $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Headers $headers -Uri "${{ steps.github_api.outputs.latest_winget_license_xml_uri }}" -OutFile "./winget_License1.xml"
 
     - name: Install Microsoft.UI.Xaml v2.8.6
@@ -111,4 +107,3 @@ runs:
         $version=winget --version
         Write-Host "$version"
         Write-Output "winget-version=$version" >> $Env:GITHUB_OUTPUT
-
