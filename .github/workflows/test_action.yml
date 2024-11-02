@@ -1,12 +1,8 @@
 name: 'Test Action 2'
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: 0 0 * * *
   push:
-    branches:
-    - main, blessio-patch-1
+    branches: [main, blessio-patch-1]
 
 jobs:
   test-job:
