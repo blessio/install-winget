@@ -57,4 +57,6 @@ jobs:
         echo $VERSION
 
     - name: Install wingetcreate
-      run: winget install wingetcreate --disable-interactivity --accept-source-agreements
+      run: | 
+        $ProgressPreference = 'SilentlyContinue'
+        winget install wingetcreate --disable-interactivity --accept-source-agreements
