@@ -9,6 +9,10 @@ inputs:
     description: 'No scopes GitHub token for querying the API and downloading from winget-cli releases'
     required: false
     default: 'NONE'
+  wget_release_id:
+    description: 'Taking the latest release of winget is not a riskless idea, here you can specify a different one. To check which ones are abailable, please look into https://api.github.com/repos/microsoft/winget-cli/releases '
+    required: false
+    default: latest
 outputs:
   winget-version:
     description: "The version of winget installed"
@@ -20,23 +24,27 @@ runs:
   steps:
     - name: Download Microsoft.UI.Xaml v2.8.6
       shell: powershell
-      run: | # $ProgressPreference = 'SilentlyContinue'
+      run: | 
+        $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.8.6 -OutFile .\microsoft.ui.xaml.2.8.6.zip
 
     - name: Unzip Microsoft.UI.Xaml v2.8.6
       shell: powershell
       run: |
+        $ProgressPreference = 'SilentlyContinue'
         Expand-Archive .\microsoft.ui.xaml.2.8.6.zip
 
     - name: Download Microsoft.VCLibs.x64.14.00.Desktop
       shell: powershell
-      run: | # $ProgressPreference = 'SilentlyContinue'
+      run: | 
+        $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
 
     - name: Determine Latest winget release via GitHub API
       id: github_api
       shell: powershell
-      run: | #  $ProgressPreference = 'SilentlyContinue' #181234098  
+      run: |
+        $ProgressPreference = 'SilentlyContinue'
         if ("${{ inputs.GITHUB_TOKEN }}" -ne "NONE") {
           $headers = @{ "Authorization" = "Bearer ${{ inputs.GITHUB_TOKEN }}" }
           Write-Host "Token present"
@@ -45,7 +53,7 @@ runs:
           Write-Host "No token present"
         }
 
-        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/164835566  -Headers $headers   
+        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/${{}}   -Headers $headers   
         $wingetReleaseAssets = $gitHubReleasesResponse.assets
         $latestWingetMsixBundleUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith(".msixbundle")}
         $latestWingetLicenseXmlUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith("License1.xml")}
@@ -56,34 +64,40 @@ runs:
 
     - name: Download winget
       shell: powershell
-      run: | # $ProgressPreference = 'SilentlyContinue'
+      run: | 
+        $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Headers $headers -Uri "${{ steps.github_api.outputs.latest_winget_msix_bundle_uri }}" -OutFile "./winget.msixbundle"
 
     - name: Download License
       shell: powershell
-      run: | # $ProgressPreference = 'SilentlyContinue'
+      run: | 
+        $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Headers $headers -Uri "${{ steps.github_api.outputs.latest_winget_license_xml_uri }}" -OutFile "./winget_License1.xml"
 
     - name: Install Microsoft.UI.Xaml v2.8.6
       shell: powershell
       run: |
+        $ProgressPreference = 'SilentlyContinue'
         Add-AppxPackage .\microsoft.ui.xaml.2.8.6\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.8.appx
 
     - name: Install Microsoft.VCLibs.x64.14.00.Desktop
       shell: powershell
       run: |
+        $ProgressPreference = 'SilentlyContinue'
         Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
 
     - name: Provisioning Winget
       shell: powershell
       run: |
         echo "PROVISIONING WINGET"
+        $ProgressPreference = 'SilentlyContinue'
         Add-AppxProvisionedPackage -Online -PackagePath ./winget.msixbundle -LicensePath ./winget_License1.xml
 
     - name: Installing Winget
       shell: powershell
       run: |
         echo "INSTALLING WINGET"
+        $ProgressPreference = 'SilentlyContinue'
         Add-AppxPackage .\winget.msixbundle
 
     - name: Cleanup Downloads
@@ -98,7 +112,7 @@ runs:
     - name: Wait to allow Installation to Finalize
       shell: powershell
       run: |
-        foreach ($i in 1..10) {
+        foreach ($i in 1..30) {
           Start-Sleep -Seconds 3
           Write-Host "Waiting for winget to install... ${i}"
           if (Get-Command winget -ErrorAction SilentlyContinue) {
