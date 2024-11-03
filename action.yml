@@ -43,7 +43,7 @@ runs:
     - name: Determine Latest winget release via GitHub API
       id: github_api
       shell: powershell
-      run: |
+      run: | 
         $ProgressPreference = 'SilentlyContinue'
         if ("${{ inputs.GITHUB_TOKEN }}" -ne "NONE") {
           $headers = @{ "Authorization" = "Bearer ${{ inputs.GITHUB_TOKEN }}" }
