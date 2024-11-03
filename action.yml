@@ -53,7 +53,7 @@ runs:
           Write-Host "No token present"
         }
 
-        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/${{}}   -Headers $headers   
+        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/${{ wget_release_id }} -Headers $headers   
         $wingetReleaseAssets = $gitHubReleasesResponse.assets
         $latestWingetMsixBundleUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith(".msixbundle")}
         $latestWingetLicenseXmlUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith("License1.xml")}
