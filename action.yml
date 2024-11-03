@@ -36,7 +36,7 @@ runs:
     - name: Determine Latest winget release via GitHub API
       id: github_api
       shell: powershell
-      run: | #  $ProgressPreference = 'SilentlyContinue'
+      run: | #  $ProgressPreference = 'SilentlyContinue' #181234098  
         if ("${{ inputs.GITHUB_TOKEN }}" -ne "NONE") {
           $headers = @{ "Authorization" = "Bearer ${{ inputs.GITHUB_TOKEN }}" }
           Write-Host "Token present"
@@ -45,7 +45,7 @@ runs:
           Write-Host "No token present"
         }
 
-        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/latest -Headers $headers
+        $gitHubReleasesResponse = Invoke-RestMethod https://api.github.com/repos/microsoft/winget-cli/releases/164835566  -Headers $headers   
         $wingetReleaseAssets = $gitHubReleasesResponse.assets
         $latestWingetMsixBundleUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith(".msixbundle")}
         $latestWingetLicenseXmlUri = $wingetReleaseAssets.browser_download_url | Where-Object {$_.EndsWith("License1.xml")}
