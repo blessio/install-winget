@@ -1,5 +1,5 @@
 name: Install winget
-description: Installs the latest version of winget
+description: Installs the a selected (can be latest) version of winget
 author: Dominion/Cyberboss
 branding:
   icon: arrow-down-circle

@@ -17,7 +17,7 @@ jobs:
       id: install-winget
       uses: blessio/install-winget@blessio-patch-1
       with: 
-        get_release_id: '164835566'
+        wget_release_id: '164835566'
 
     - name: Check Version
       shell: bash
