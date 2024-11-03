@@ -35,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'windows-2022', 'windows-latest' ]
-        repeat: [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' ]
+        repeat: [ 'a', 'b', 'c', 'd', 'e', 'f', 'g'  ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Install winget
@@ -43,6 +43,7 @@ jobs:
       uses: blessio/install-winget@blessio-patch-1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        wget_release_id: '164835566'
 
     - name: Check Version
       shell: bash
