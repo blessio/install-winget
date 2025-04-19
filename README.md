@@ -24,7 +24,7 @@ jobs:
       uses: Cyberboss/install-winget@v1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        wget_release_id: latest
+        wget_release_id: latest # default is '164835566' because latest does fail
 
     - name: Install wingetcreate
       run: winget install wingetcreate --disable-interactivity --accept-source-agreements
@@ -40,7 +40,7 @@ The GitHub token to use when interacting with the GitHub API. Used to bypass una
 
 #### `wget_release_id` (Optional)
 
-This is used to be able to pin (make immutable) the version of winget that is taken github. To see which versions (you need the release-id) is possible to use plese check the github API for the release of [winget-cli](https://github.com/microsoft/winget-cli) this can be checked by looking for the topmost `id:` attribute here: https://api.github.com/repos/microsoft/winget-cli/releases . 
+This is used to be able to pin (make immutable) the version of winget that is taken github. To see which versions (you need the release-id) is possible to use please check the github API for the release of [winget-cli](https://github.com/microsoft/winget-cli) this can be checked by looking for the topmost `id:` attribute here: https://api.github.com/repos/microsoft/winget-cli/releases . 
 
 ### Outputs
 
